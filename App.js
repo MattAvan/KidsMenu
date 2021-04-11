@@ -1,11 +1,11 @@
 import React from "react";
 import { RecoilRoot } from "recoil";
-import Main from "./src/components/Main";
+import MainRouter from "./src/components/MainRouter";
 
 export default function App() {
   return (
     <RecoilRoot>
-      <Main />
+      <MainRouter />
     </RecoilRoot>
   );
 }
