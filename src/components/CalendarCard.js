@@ -15,16 +15,12 @@ import {
   weekMenuState,
   foodState,
   emptyFoodState,
-  foodModalIsOpenState,
   useWeekMenusRecoilState,
 } from "../state";
 import FoodList from "./FoodList";
 import styles from "../styles";
 
-const CalendarCard = ({ mealKey }) => {
-  const [foodModalIsOpen, setFoodModalIsOpen] = useRecoilState(
-    foodModalIsOpenState(mealKey)
-  );
+const CalendarCard = ({ mealKey, navigation }) => {
   const [menu, setMenu, setMenuAndSave] = useWeekMenusRecoilState(mealKey);
   const noFood = !menu.food || menu.food.length == 0;
   let food;
@@ -52,7 +48,12 @@ const CalendarCard = ({ mealKey }) => {
       <CardItem style={[styles.cardButtons, cardStyle]}>
         {noFood ? (
           <Button
-            onPress={() => setFoodModalIsOpen(true)}
+            onPress={() =>
+              navigation.navigate("Weekly Menu", {
+                screen: "Recipes",
+                params: { mealKey: mealKey },
+              })
+            }
             iconLeft
             bordered
             small
@@ -63,12 +64,17 @@ const CalendarCard = ({ mealKey }) => {
         ) : (
           <>
             <Button
-              onPress={() => setFoodModalIsOpen(true)}
+              onPress={() =>
+                navigation.navigate("Weekly Menu", {
+                  screen: "Recipes",
+                  params: { mealKey: mealKey },
+                })
+              }
               iconLeft
               bordered
               small
             >
-              <Icon name="add" />
+              <Icon name="swap-horizontal" />
               <Text>Change</Text>
             </Button>
             <Button
@@ -84,11 +90,6 @@ const CalendarCard = ({ mealKey }) => {
               <Text>Remove</Text>
             </Button>
           </>
-        )}
-        {foodModalIsOpen && (
-          <Modal animationType="slide" visible={true}>
-            <FoodList mealKey={mealKey} />
-          </Modal>
         )}
       </CardItem>
     </Card>

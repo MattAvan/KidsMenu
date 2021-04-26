@@ -1,17 +1,42 @@
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { foodIdsState } from "../state";
 import FoodCard from "./FoodCard";
-import { Container, Content } from "native-base";
+import {
+  Container,
+  Content,
+  Button,
+  Icon,
+  Text,
+  Card,
+  CardItem,
+  List,
+  ListItem,
+} from "native-base";
+import styles from "../styles";
 
-const FoodList = ({ mealKey }) => {
-  const [foodIds, setFoodIds] = useRecoilState(foodIdsState);
+const FoodList = ({ route, navigation }) => {
+  const foodIds = useRecoilValue(foodIdsState);
 
   return (
     <Container>
       <Content>
+        <Card>
+          <CardItem styles={styles.cardButtons}>
+            <Button iconLeft bordered>
+              <Icon name="add" />
+              <Text>Add Recipe</Text>
+            </Button>
+          </CardItem>
+        </Card>
+
         {foodIds.map((id) => (
-          <FoodCard key={id} id={id} mealKey={mealKey} />
+          <FoodCard
+            key={id}
+            id={id}
+            mealKey={route.params?.mealKey}
+            navigation={navigation}
+          />
         ))}
       </Content>
     </Container>

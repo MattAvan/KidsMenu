@@ -49,14 +49,19 @@ const weekMenuState = atomFamily({
   default: {},
 });
 
+const averageFoodRatingState = selectorFamily({
+  key: "averageFoodRatingState",
+  get: (foodId) => ({ get }) => {
+    const foodItem = get(foodState(foodId));
+    return (
+      foodItem.scores.reduce((a, b) => a + b.score, 0) / foodItem.scores.length
+    );
+  },
+});
+
 const emptyFoodState = constSelector({
   key: "emptyFood",
   default: { foodName: "No food selected" },
-});
-
-const foodModalIsOpenState = atomFamily({
-  key: "foodModalOpen",
-  default: false,
 });
 
 const useWeekMenusRecoilState = (mealKey) => {
@@ -74,6 +79,6 @@ export {
   weekMenuState,
   mealList,
   emptyFoodState,
-  foodModalIsOpenState,
   useWeekMenusRecoilState,
+  averageFoodRatingState,
 };

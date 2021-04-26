@@ -17,7 +17,7 @@ import { chain } from "lodash";
 import { mealList } from "../state";
 import CalendarCard from "./CalendarCard";
 
-export default function WeekMenu() {
+export default function WeekMenu({ navigation }) {
   const organizedMenu = chain(Object.entries(mealList))
     .map(([key, value]) => {
       return { ...value, mealKey: key };
@@ -29,7 +29,11 @@ export default function WeekMenu() {
       <Content padder>
         {organizedMenu.map((dayMenu) => {
           return (
-            <CalendarCard key={dayMenu.mealKey} mealKey={dayMenu.mealKey} />
+            <CalendarCard
+              key={dayMenu.mealKey}
+              mealKey={dayMenu.mealKey}
+              navigation={navigation}
+            />
           );
         })}
       </Content>

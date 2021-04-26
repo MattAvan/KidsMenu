@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import WeekMenu from "./WeekMenu";
 import FoodList from "./FoodList";
+import FoodEdit from "./FoodEdit";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
@@ -8,8 +9,10 @@ import DataLoader from "./DataLoader";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Icon } from "native-base";
+import styles from "../styles";
 
-const Drawer = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 const WeekMenuStack = createStackNavigator();
 const FoodListStack = createStackNavigator();
 
@@ -26,6 +29,7 @@ const FoodListRouter = () => {
   return (
     <FoodListStack.Navigator>
       <FoodListStack.Screen name="Recipes" component={FoodList} />
+      <FoodListStack.Screen name="Edit Food" component={FoodEdit} />
     </FoodListStack.Navigator>
   );
 };
@@ -53,10 +57,27 @@ const MainRouter = () => {
   return (
     <NavigationContainer>
       <DataLoader />
-      <Drawer.Navigator initialRouteName="Main">
-        <Drawer.Screen name="Weekly Menu" component={WeekMenuRouter} />
-        <Drawer.Screen name="Recipes" component={FoodListRouter} />
-      </Drawer.Navigator>
+      <Tab.Navigator
+        initialRouteName="Weekly Menu"
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === "Weekly Menu") {
+              iconName = focused ? "calendar" : "calendar-outline";
+            } else if (route.name === "Recipes") {
+              iconName = focused ? "library" : "library-outline";
+            }
+            return <Icon name={iconName} />;
+          },
+        })}
+        tabBarOptions={{
+          labelStyle: styles.tabBarStyle,
+          color: "blue",
+        }}
+      >
+        <Tab.Screen name="Weekly Menu" component={WeekMenuRouter} />
+        <Tab.Screen name="Recipes" component={FoodListRouter} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 };
