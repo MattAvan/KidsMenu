@@ -1,11 +1,14 @@
 import React from "react";
 import { RecoilRoot } from "recoil";
-import MainRouter from "./src/components/MainRouter";
+import ThemeContext from "./src/components/ThemeContext";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
   return (
-    <RecoilRoot>
-      <MainRouter />
-    </RecoilRoot>
+    <SafeAreaProvider>
+      <RecoilRoot>
+        <ThemeContext />
+      </RecoilRoot>
+    </SafeAreaProvider>
   );
 }

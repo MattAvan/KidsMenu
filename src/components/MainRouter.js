@@ -9,7 +9,7 @@ import DataLoader from "./DataLoader";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Icon } from "native-base";
+import { Icon } from "react-native-elements";
 import styles from "../styles";
 
 const Tab = createBottomTabNavigator();
@@ -37,6 +37,7 @@ const FoodListRouter = () => {
 const MainRouter = () => {
   const [isReady, setIsReady] = useState(false);
 
+  // Loading the fonts
   const loadFonts = async () => {
     await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
@@ -44,7 +45,6 @@ const MainRouter = () => {
       ...Ionicons.font,
     });
   };
-
   if (!isReady) {
     return (
       <AppLoading
@@ -54,6 +54,7 @@ const MainRouter = () => {
       />
     );
   }
+
   return (
     <NavigationContainer>
       <DataLoader />
@@ -67,7 +68,7 @@ const MainRouter = () => {
             } else if (route.name === "Recipes") {
               iconName = focused ? "library" : "library-outline";
             }
-            return <Icon name={iconName} />;
+            return <Icon type="ionicon" name={iconName} />;
           },
         })}
         tabBarOptions={{

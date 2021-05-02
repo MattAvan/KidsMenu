@@ -1,18 +1,5 @@
 import React from "react";
-//import { StyleSheet } from "react-native";
-import {
-  Container,
-  Text,
-  Header,
-  Content,
-  Footer,
-  Left,
-  Right,
-  Button,
-  Icon,
-  Body,
-  Title,
-} from "native-base";
+import { ScrollView } from "react-native";
 import { chain } from "lodash";
 import { mealList } from "../state";
 import CalendarCard from "./CalendarCard";
@@ -25,18 +12,16 @@ export default function WeekMenu({ navigation }) {
     .value();
 
   return (
-    <Container>
-      <Content padder>
-        {organizedMenu.map((dayMenu) => {
-          return (
-            <CalendarCard
-              key={dayMenu.mealKey}
-              mealKey={dayMenu.mealKey}
-              navigation={navigation}
-            />
-          );
-        })}
-      </Content>
-    </Container>
+    <ScrollView>
+      {organizedMenu.map((dayMenu) => {
+        return (
+          <CalendarCard
+            key={dayMenu.mealKey}
+            mealKey={dayMenu.mealKey}
+            navigation={navigation}
+          />
+        );
+      })}
+    </ScrollView>
   );
 }

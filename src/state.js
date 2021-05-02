@@ -29,11 +29,6 @@ const mealList = {
   sundayDinner: { weekDay: "Sunday", mealTime: "Dinner" },
 };
 
-const toSaveState = atom({
-  key: "toSaveState",
-  default: [],
-});
-
 const foodIdsState = atom({
   key: "foodIdsState",
   default: [],

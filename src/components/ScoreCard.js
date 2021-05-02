@@ -1,29 +1,22 @@
 import React from "react";
-import { Text, Container, Badge, Icon } from "native-base";
+//import { Text, Container, Badge, Icon } from "native-base";
+import { Chip, Text } from "react-native-elements";
 import { View } from "react-native";
 
-const ScoreCard = ({ scores, average }) => {
-  const averageColor = average >= 8 ? "green" : average >= 6 ? "orange" : "red";
+const ScoreCard = ({ scores }) => {
   return (
     <View>
       {scores.map((score) => {
-        const badgeColor =
+        const chipColor =
           score.score >= 8 ? "green" : score.score >= 6 ? "orange" : "red";
         return (
-          <View key={score.id} style={{ flexDirection: "row" }}>
-            <Text>{score.kid.kidName} </Text>
-            <Badge style={{ backgroundColor: badgeColor }}>
-              <Text>{score.score}</Text>
-            </Badge>
-          </View>
+          <Chip
+            key={score.id}
+            title={`${score.kid.kidName}: ${score.score}`}
+            buttonStyle={{ backgroundColor: chipColor }}
+          />
         );
       })}
-      <View style={{ flexDirection: "row" }}>
-        <Text>Average </Text>
-        <Badge style={{ backgroundColor: averageColor }}>
-          <Text>{average}</Text>
-        </Badge>
-      </View>
     </View>
   );
 };

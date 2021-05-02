@@ -2,44 +2,36 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import { foodIdsState } from "../state";
 import FoodCard from "./FoodCard";
-import {
-  Container,
-  Content,
-  Button,
-  Icon,
-  Text,
-  Card,
-  CardItem,
-  List,
-  ListItem,
-} from "native-base";
+import { View, FlatList } from "react-native";
+import { Card, Button, Icon } from "react-native-elements";
 import styles from "../styles";
 
 const FoodList = ({ route, navigation }) => {
   const foodIds = useRecoilValue(foodIdsState);
+  const renderFoodCard = ({ item }) => (
+    <FoodCard
+      id={item}
+      mealKey={route.params?.mealKey}
+      navigation={navigation}
+    />
+  );
 
   return (
-    <Container>
-      <Content>
-        <Card>
-          <CardItem styles={styles.cardButtons}>
-            <Button iconLeft bordered>
-              <Icon name="add" />
-              <Text>Add Recipe</Text>
-            </Button>
-          </CardItem>
-        </Card>
-
-        {foodIds.map((id) => (
-          <FoodCard
-            key={id}
-            id={id}
-            mealKey={route.params?.mealKey}
-            navigation={navigation}
-          />
-        ))}
-      </Content>
-    </Container>
+    <View>
+      <Card>
+        <Button
+          onPress={() => navigation.navigate("Edit Food")}
+          title="Add Recipe"
+          icon={<Icon name="add" />}
+          type="outline"
+        />
+      </Card>
+      <FlatList
+        data={foodIds}
+        renderItem={renderFoodCard}
+        keyExtractor={(item) => item.toString()}
+      />
+    </View>
   );
 };
 export default FoodList;
