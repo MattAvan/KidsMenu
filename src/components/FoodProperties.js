@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Icon, Text } from "react-native-elements";
-import styles from "../styles";
+import centralStyles from "../centralStyles";
 
 const FoodProperties = ({ item, showText }) => {
   const proteinsText = item.containsProteins
@@ -14,29 +14,37 @@ const FoodProperties = ({ item, showText }) => {
   const vegetablesColor = item.containsVegetables ? "green" : "lightgrey";
   const fishText = item.containsFish ? "Contains Fish" : "No Fish";
   const fishColor = item.containsFish ? "blue" : "lightgrey";
+
   return (
-    <View>
+    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
       <Icon
         name="food-drumstick"
         color={proteinsColor}
         type="material-community"
       />
       {showText ?? (
-        <Text style={[styles.foodProperties, { color: proteinsColor }]}>
+        <Text style={[centralStyles.foodProperties, { color: proteinsColor }]}>
           {proteinsText}
         </Text>
       )}
 
-      <Icon name="leaf" color={vegetablesColor} type="font-awesome-5" />
+      <Icon
+        containerStyle={{ marginRight: 4 }}
+        name="leaf"
+        color={vegetablesColor}
+        type="font-awesome-5"
+      />
       {showText ?? (
-        <Text style={[styles.foodProperties, { color: vegetablesColor }]}>
+        <Text
+          style={[centralStyles.foodProperties, { color: vegetablesColor }]}
+        >
           {vegetablesText}
         </Text>
       )}
 
       <Icon name="fish" color={fishColor} type="font-awesome-5" />
       {showText ?? (
-        <Text style={[styles.foodProperties, { color: fishColor }]}>
+        <Text style={[centralStyles.foodProperties, { color: fishColor }]}>
           {fishText}
         </Text>
       )}

@@ -11,6 +11,7 @@ const ScoreCard = ({ scores }) => {
           score.score >= 8 ? "green" : score.score >= 6 ? "orange" : "red";
         return (
           <Chip
+            containerStyle={{ marginBottom: 4 }}
             key={score.id}
             title={`${score.kid.kidName}: ${score.score}`}
             buttonStyle={{ backgroundColor: chipColor }}

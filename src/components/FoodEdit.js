@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {
+/*import {
   Form,
   Item,
   Input,
@@ -8,13 +8,13 @@ import {
   ListItem,
   Text,
   Label,
-} from "native-base";
+} from "native-base";*/
 
 const FoodEdit = ({ navigation }) => {
   const [foodName, setFoodName] = useState("");
   const [checkbox, setCheckbox] = useState(false);
 
-  return (
+  /*return (
     <Form>
       <Item floatingLabel>
         <Label>Recipe Name</Label>
@@ -25,7 +25,8 @@ const FoodEdit = ({ navigation }) => {
         <Text> Test Checkbox</Text>
       </ListItem>
     </Form>
-  );
+  );*/
+  return null;
 };
 
 export default FoodEdit;

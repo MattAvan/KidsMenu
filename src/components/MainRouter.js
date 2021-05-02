@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { Icon } from "react-native-elements";
 import WeekMenu from "./WeekMenu";
 import FoodList from "./FoodList";
 import FoodEdit from "./FoodEdit";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
-import AppLoading from "expo-app-loading";
 import DataLoader from "./DataLoader";
-import * as Font from "expo-font";
-import { Ionicons } from "@expo/vector-icons";
-import { createStackNavigator } from "@react-navigation/stack";
-import { Icon } from "react-native-elements";
-import styles from "../styles";
+import centralStyles from "../centralStyles";
 
 const Tab = createBottomTabNavigator();
 const WeekMenuStack = createStackNavigator();
@@ -35,26 +32,6 @@ const FoodListRouter = () => {
 };
 
 const MainRouter = () => {
-  const [isReady, setIsReady] = useState(false);
-
-  // Loading the fonts
-  const loadFonts = async () => {
-    await Font.loadAsync({
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-      ...Ionicons.font,
-    });
-  };
-  if (!isReady) {
-    return (
-      <AppLoading
-        startAsync={loadFonts}
-        onFinish={() => setIsReady(true)}
-        onError={console.warn}
-      />
-    );
-  }
-
   return (
     <NavigationContainer>
       <DataLoader />
@@ -72,7 +49,6 @@ const MainRouter = () => {
           },
         })}
         tabBarOptions={{
-          labelStyle: styles.tabBarStyle,
           color: "blue",
         }}
       >
