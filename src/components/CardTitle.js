@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Text, Icon } from "react-native-elements";
-import centralStyles from "../centralStyles";
+import { centralStyles } from "../centralStyles";
 /*const layout = Stylesheet.create({
     
 });*/

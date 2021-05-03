@@ -2,11 +2,14 @@ import React from "react";
 import { Card, Text, Button, Icon } from "react-native-elements";
 import { View } from "react-native";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { foodState, emptyFoodState, useWeekMenusRecoilState } from "../state";
-import FoodList from "./FoodList";
-import CardTitle from "./CardTitle";
-import FoodCard from "./FoodCard";
-import centralStyles from "../centralStyles";
+import {
+  foodState,
+  emptyFoodState,
+  useWeekMenusRecoilState,
+} from "../../state";
+import CardTitle from "../../components/CardTitle";
+import FoodCard from "../FoodList/FoodCard";
+import { centralStyles } from "../../centralStyles";
 import _ from "lodash";
 
 const CalendarCard = ({ mealKey, navigation }) => {

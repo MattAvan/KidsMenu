@@ -1,9 +1,10 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { foodIdsState } from "../state";
+import { foodIdsState } from "../../state";
 import FoodCard from "./FoodCard";
 import { View, FlatList } from "react-native";
 import { Card, Button, Icon } from "react-native-elements";
+import { centralStyles } from "../../centralStyles";
 
 const FoodList = ({ route, navigation }) => {
   const foodIds = useRecoilValue(foodIdsState);
@@ -19,7 +20,7 @@ const FoodList = ({ route, navigation }) => {
   );
 
   return (
-    <View>
+    <View style={centralStyles.screenMainView}>
       <Card>
         <Button
           onPress={() => navigation.navigate("Edit Food")}

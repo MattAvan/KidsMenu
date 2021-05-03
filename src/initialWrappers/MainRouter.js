@@ -3,11 +3,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Icon } from "react-native-elements";
-import WeekMenu from "./WeekMenu";
-import FoodList from "./FoodList";
-import FoodEdit from "./FoodEdit";
-import DataLoader from "./DataLoader";
-import centralStyles from "../centralStyles";
+import WeekMenu from "../screens/WeekMenu/WeekMenu";
+import FoodList from "../screens/FoodList/FoodList";
+import FoodEdit from "../screens/FoodEdit/FoodEdit";
+import DataLoader from "../components/DataLoader";
 
 const Tab = createBottomTabNavigator();
 const WeekMenuStack = createStackNavigator();

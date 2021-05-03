@@ -1,6 +1,10 @@
 import { StyleSheet } from "react-native";
 
-const centralStyles = StyleSheet.create({
+export const centralStyles = StyleSheet.create({
+  screenMainView: {
+    marginBottom: 8,
+    flex: 1,
+  },
   cardTitle: {
     fontWeight: "bold",
     fontSize: 16,
@@ -17,4 +21,20 @@ const centralStyles = StyleSheet.create({
   },
 });
 
-export default centralStyles;
+export const iconConfig = {
+  proteins: {
+    type: "material-community",
+    name: "food-drumstick",
+    color: "brown",
+  },
+  fish: {
+    type: "font-awesome-5",
+    name: "fish",
+    color: "blue",
+  },
+  vegetables: {
+    type: "font-awesome-5",
+    name: "leaf",
+    color: "green",
+  },
+};

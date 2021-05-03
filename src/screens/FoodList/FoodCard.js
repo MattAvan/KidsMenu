@@ -4,12 +4,12 @@ import {
   foodState,
   useWeekMenusRecoilState,
   averageFoodRatingState,
-} from "../state";
+} from "../../state";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { Icon, Avatar, Text } from "react-native-elements";
-import centralStyles from "../centralStyles";
-import FoodProperties from "./FoodProperties";
-import ScoreCard from "./ScoreCard";
+import { centralStyles } from "../../centralStyles";
+import FoodProperty from "../../components/FoodProperty";
+import ScoreCard from "../../components/ScoreCard";
 import _ from "lodash";
 
 const FoodCard = ({ id, mealKey, navigation, editable = true }) => {
@@ -43,7 +43,21 @@ const FoodCard = ({ id, mealKey, navigation, editable = true }) => {
           ></Avatar>
           <View style={styles.secondaryInformationView}>
             <ScoreCard scores={foodItem.scores} />
-            <FoodProperties item={foodItem} showText={false} />
+            <View style={styles.foodPropertiesView}>
+              <FoodProperty
+                propertyName="proteins"
+                isPropertyActive={foodItem.containsProteins}
+              />
+              <FoodProperty
+                propertyName="vegetables"
+                isPropertyActive={foodItem.containsVegetables}
+                needsMargin={true}
+              />
+              <FoodProperty
+                propertyName="fish"
+                isPropertyActive={foodItem.containsFish}
+              />
+            </View>
           </View>
         </View>
       </View>
@@ -71,6 +85,10 @@ const styles = StyleSheet.create({
   avatarView: {
     flex: 2,
     backgroundColor: "grey",
+  },
+  foodPropertiesView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   secondaryInformationView: {
     flex: 1,
