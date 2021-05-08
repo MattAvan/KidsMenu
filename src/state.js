@@ -29,21 +29,25 @@ const mealList = {
   sundayDinner: { weekDay: "Sunday", mealTime: "Dinner" },
 };
 
+// List of ids of foods
 const foodIdsState = atom({
   key: "foodIdsState",
   default: [],
 });
 
+// Each atom is a food
 const foodState = atomFamily({
   key: "foodState",
   default: {},
 });
 
+// Each atom is a menu for a weekday
 const weekMenuState = atomFamily({
   key: "weekMenuState",
   default: {},
 });
 
+// Calculation of the average rating (not used for now ?)
 const averageFoodRatingState = selectorFamily({
   key: "averageFoodRatingState",
   get: (foodId) => ({ get }) => {
@@ -54,11 +58,22 @@ const averageFoodRatingState = selectorFamily({
   },
 });
 
+// Empty food selector for the week days where no menu is selected
 const emptyFoodState = constSelector({
   key: "emptyFood",
-  default: { foodName: "No food selected" },
+  default: {
+    foodName: "",
+    containsProteins: false,
+    containsVegetables: false,
+    containsFish: false,
+    isMainCourse: true,
+    lastEaten: "",
+    scores: [],
+    foodImage: null,
+  },
 });
 
+// Custom hook to update optimistically the menu of a day and save in database
 const useWeekMenusRecoilState = (mealKey) => {
   const [menu, setMenu] = useRecoilState(weekMenuState(mealKey));
   const setMenuAndSave = async (newValue) => {
