@@ -1,24 +1,28 @@
 import React from "react";
-import { ScrollView } from "react-native";
-import { chain } from "lodash";
-import { mealList } from "../../state";
+import { ScrollView, ActivityIndicator, Text } from "react-native";
 import CalendarCard from "./CalendarCard";
 import { centralStyles } from "../../centralStyles";
+import { useQuery } from "react-query";
 
 export default function WeekMenu({ navigation }) {
-  const organizedMenu = chain(Object.entries(mealList))
-    .map(([key, value]) => {
-      return { ...value, mealKey: key };
-    })
-    .value();
+  const { isLoading, isError, error, data: menu } = useQuery("weekmenus/");
+
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (isError) {
+    console.log(error);
+    return <Text>An error occurred</Text>;
+  }
 
   return (
     <ScrollView style={centralStyles.screenMainView}>
-      {organizedMenu.map((dayMenu) => {
+      {menu.map((dayMenu) => {
         return (
           <CalendarCard
-            key={dayMenu.mealKey}
-            mealKey={dayMenu.mealKey}
+            key={dayMenu.id}
+            menu={dayMenu}
             navigation={navigation}
           />
         );

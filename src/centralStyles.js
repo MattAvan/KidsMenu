@@ -38,3 +38,13 @@ export const iconConfig = {
     color: "green",
   },
 };
+
+export const colorPicker = (rating) => {
+  if (rating >= 4) {
+    return "green";
+  } else if (rating >= 2) {
+    return "orange";
+  } else {
+    return "red";
+  }
+};

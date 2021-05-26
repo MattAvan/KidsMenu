@@ -6,7 +6,6 @@ import { Icon } from "react-native-elements";
 import WeekMenu from "../screens/WeekMenu/WeekMenu";
 import FoodList from "../screens/FoodList/FoodList";
 import FoodEdit from "../screens/FoodEdit/FoodEdit";
-import DataLoader from "../components/DataLoader";
 
 const Tab = createBottomTabNavigator();
 const WeekMenuStack = createStackNavigator();
@@ -33,7 +32,6 @@ const FoodListRouter = () => {
 const MainRouter = () => {
   return (
     <NavigationContainer>
-      <DataLoader />
       <Tab.Navigator
         initialRouteName="Weekly Menu"
         screenOptions={({ route }) => ({

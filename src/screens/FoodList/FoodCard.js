@@ -1,36 +1,47 @@
 import React from "react";
-import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
-import {
-  foodState,
-  useWeekMenusRecoilState,
-  averageFoodRatingState,
-} from "../../state";
-import { TouchableOpacity, View, StyleSheet } from "react-native";
+import { useQuery } from "react-query";
+import { useSetNewFoodOnMenu } from "../../queries";
+import { Pressable, View, StyleSheet, ActivityIndicator } from "react-native";
 import { Icon, Avatar, Text } from "react-native-elements";
 import { centralStyles } from "../../centralStyles";
 import FoodProperty from "../../components/FoodProperty";
 import ScoreCard from "../../components/ScoreCard";
 import _ from "lodash";
 
-const FoodCard = ({ id, mealKey, navigation, editable = true }) => {
-  const foodItem = useRecoilValue(foodState(id));
-  const [menu, setMenu, setMenuAndSave] = useWeekMenusRecoilState(mealKey);
+const FoodCard = ({ id, mealId, navigation, editable = true }) => {
+  const {
+    isLoading,
+    isError,
+    data: foodItem,
+    error,
+  } = useQuery(`foods/${id}/`);
+  const setNewFoodOnMenu = useSetNewFoodOnMenu(mealId);
+
   const handlePress = () => {
-    const newState = { ...menu, food: [id] };
-    setMenuAndSave(newState);
+    setNewFoodOnMenu.mutate(id);
     navigation.navigate("Weekly Menu", { screen: "Menu of the Week" });
   };
 
-  if (!foodItem || _.isEmpty(foodItem)) {
-    return null;
+  const handleEdit = () => {
+    navigation.navigate("Edit Food", { foodItem: foodItem });
+  };
+
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (isError) {
+    return <Text>An error occurred</Text>;
   }
 
   return (
-    <TouchableOpacity disabled={!mealKey} onPress={handlePress}>
+    <Pressable disabled={!mealId} onPress={handlePress}>
       <View style={styles.mainView}>
         <View style={styles.titleView}>
           <Text style={centralStyles.foodTitle}>{foodItem.foodName}</Text>
-          {editable ? <Icon type="font-awesome-5" name="edit" /> : null}
+          {editable ? (
+            <Icon type="font-awesome-5" name="edit" onPress={handleEdit} />
+          ) : null}
         </View>
         <View style={styles.bodyView}>
           <Avatar
@@ -40,7 +51,7 @@ const FoodCard = ({ id, mealKey, navigation, editable = true }) => {
               foodItem.foodImage ? { uri: foodItem.foodImage } : undefined
             }
             title={foodItem.foodName[0]}
-          ></Avatar>
+          />
           <View style={styles.secondaryInformationView}>
             <ScoreCard scores={foodItem.scores} />
             <View style={styles.foodPropertiesView}>
@@ -61,7 +72,7 @@ const FoodCard = ({ id, mealKey, navigation, editable = true }) => {
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

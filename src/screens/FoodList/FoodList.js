@@ -1,23 +1,32 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
-import { foodIdsState } from "../../state";
+import { useQuery } from "react-query";
 import FoodCard from "./FoodCard";
-import { View, FlatList } from "react-native";
-import { Card, Button, Icon } from "react-native-elements";
+import { View, FlatList, ActivityIndicator } from "react-native";
+import { Card, Button, Icon, Text } from "react-native-elements";
 import { centralStyles } from "../../centralStyles";
 
 const FoodList = ({ route, navigation }) => {
-  const foodIds = useRecoilValue(foodIdsState);
+  const { isLoading, isError, data: foods, error } = useQuery("foods/");
+
   const renderFoodCard = ({ item }) => (
     <Card>
       <FoodCard
-        id={item}
-        mealKey={route.params?.mealKey}
+        id={item.id}
+        mealId={route.params?.mealId}
         navigation={navigation}
         editable={route.params?.editable}
       />
     </Card>
   );
+
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (isError) {
+    console.log(error);
+    return <Text>An error occurred</Text>;
+  }
 
   return (
     <View style={centralStyles.screenMainView}>
@@ -31,9 +40,9 @@ const FoodList = ({ route, navigation }) => {
       </Card>
 
       <FlatList
-        data={foodIds}
+        data={foods}
         renderItem={renderFoodCard}
-        keyExtractor={(item) => item.toString()}
+        keyExtractor={(item) => item.id.toString()}
       />
     </View>
   );

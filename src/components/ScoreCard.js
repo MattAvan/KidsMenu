@@ -1,25 +1,46 @@
 import React from "react";
-//import { Text, Container, Badge, Icon } from "native-base";
-import { Chip, Text } from "react-native-elements";
-import { View } from "react-native";
+import { AirbnbRating } from "react-native-elements";
+import { View, StyleSheet } from "react-native";
+import { colorPicker } from "../centralStyles";
 
 const ScoreCard = ({ scores }) => {
   return (
     <View>
       {scores.map((score) => {
-        const chipColor =
-          score.score >= 8 ? "green" : score.score >= 6 ? "orange" : "red";
+        const ratingColor =
+          score.score >= 4 ? "green" : score.score >= 2 ? "orange" : "red";
         return (
-          <Chip
-            containerStyle={{ marginBottom: 4 }}
-            key={score.id}
-            title={`${score.kid.kidName}: ${score.score}`}
-            buttonStyle={{ backgroundColor: chipColor }}
-          />
+          <View key={score.kid.id}>
+            <AirbnbRating
+              count={5}
+              defaultRating={score.score}
+              onFinishRating={() => null}
+              reviews={[
+                score.kid.kidName,
+                score.kid.kidName,
+                score.kid.kidName,
+                score.kid.kidName,
+                score.kid.kidName,
+              ]}
+              selectedColor={colorPicker(score.score)}
+              reviewColor={colorPicker(score.score)}
+              size={10}
+              isDisabled={true}
+              reviewSize={14}
+            />
+          </View>
         );
       })}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  ratingView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+});
 
 export default ScoreCard;
