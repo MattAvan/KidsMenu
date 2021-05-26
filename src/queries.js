@@ -4,6 +4,7 @@ import axios from "axios";
 
 export const useSetNewFoodOnMenu = (menu, menuDBId = null) => {
   const queryClient = useQueryClient();
+
   const postOrPatchMenu = async (newFood) => {
     if (menuDBId) {
       if (newFood) {
@@ -23,15 +24,27 @@ export const useSetNewFoodOnMenu = (menu, menuDBId = null) => {
       }
     }
   };
+  const queryKey = `datemenus/?date=${menu?.date}&mealTime=${menu?.mealTime}`;
 
   const mutation = useMutation(postOrPatchMenu, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(
-        `datemenus/?date=${menu.date}&mealTime=${menu.mealTime}`
-      );
+    onMutate: async (newFood) => {
+      await queryClient.cancelQueries(queryKey);
+      const newQuery = {
+        date: menu?.date,
+        mealTime: menu?.mealTime,
+        food: newFood,
+      };
+      const previousQuery = queryClient.getQueryData(queryKey);
+      queryClient.setQueryData(queryKey, newQuery);
+      return { previousQuery, newQuery };
     },
+
     onError: (error, variables, context) => {
       console.log(error);
+      queryClient.setQueryData(queryKey, context.previousQuery);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(queryKey);
     },
   });
 

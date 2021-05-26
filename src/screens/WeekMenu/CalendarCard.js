@@ -19,16 +19,13 @@ const CalendarCard = ({ menu, navigation }) => {
 
   const noFood =
     !menuContent || menuContent.length == 0 || !menuContent[0]?.food;
-
-  const setNewFoodOnMenu = useSetNewFoodOnMenu(
-    menu,
-    noFood ? null : menuContent[0]?.id
-  );
+  const menuID = noFood ? null : menuContent[0]?.id;
+  const setNewFoodOnMenu = useSetNewFoodOnMenu(menu, menuID);
 
   const handleAdd = () =>
     navigation.navigate("Weekly Menu", {
       screen: "Recipes",
-      params: { menu: menu, menuID: menuContent?.id, editable: false },
+      params: { menu: menu, menuID: menuID, editable: false },
     });
 
   const handleRemove = () => {
@@ -68,7 +65,7 @@ const CalendarCard = ({ menu, navigation }) => {
       />
       <Card.Divider />
       <View>
-        <FoodCard id={menuContent[0].food} editable={false} />
+        <FoodCard id={menuContent[0].food} menu={menu} editable={false} />
       </View>
     </Card>
   );
