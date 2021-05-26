@@ -1,32 +1,69 @@
-import React from "react";
-import { ScrollView, ActivityIndicator, Text } from "react-native";
+import React, { useState, useMemo } from "react";
+import { ScrollView, ActivityIndicator, Text, StyleSheet } from "react-native";
+import { Button } from "react-native-elements";
 import CalendarCard from "./CalendarCard";
 import { centralStyles } from "../../centralStyles";
-import { useQuery } from "react-query";
+import {
+  getPreviousMonday,
+  createMenuArray,
+  calculateNewStartingDay,
+} from "../../utils";
 
 export default function WeekMenu({ navigation }) {
-  const { isLoading, isError, error, data: menu } = useQuery("weekmenus/");
+  const [startingDay, setStartingDay] = useState(getPreviousMonday());
+  /*const {
+    isLoading,
+    isError,
+    error,
+    data: menu,
+  } = useQuery(`datemenus/?date__gte=${dayRange[0]}&date__lte=${dayRange[1]}`);*/
 
-  if (isLoading) {
+  //  console.log(dates);
+  const menuArray = useMemo(
+    () => createMenuArray(startingDay, 7),
+    [startingDay]
+  );
+
+  const increaseDate = () => {
+    setStartingDay(calculateNewStartingDay(startingDay, 7));
+  };
+
+  const decreaseDate = () => {
+    setStartingDay(calculateNewStartingDay(startingDay, -7));
+  };
+
+  /*if (isLoading) {
     return <ActivityIndicator />;
   }
 
   if (isError) {
     console.log(error);
     return <Text>An error occurred</Text>;
-  }
+  }*/
 
   return (
     <ScrollView style={centralStyles.screenMainView}>
-      {menu.map((dayMenu) => {
+      <Button
+        containerStyle={styles.buttonContainerStyle}
+        icon={{ type: "font-awesome-5", name: "angle-double-up" }}
+        onPress={decreaseDate}
+      />
+      {menuArray.map((menu) => {
         return (
-          <CalendarCard
-            key={dayMenu.id}
-            menu={dayMenu}
-            navigation={navigation}
-          />
+          <CalendarCard key={menu.index} menu={menu} navigation={navigation} />
         );
       })}
+      <Button
+        containerStyle={styles.buttonContainerStyle}
+        icon={{ type: "font-awesome-5", name: "angle-double-down" }}
+        onPress={increaseDate}
+      />
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  buttonContainerStyle: {
+    margin: 8,
+  },
+});

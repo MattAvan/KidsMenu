@@ -1,31 +1,54 @@
 import React from "react";
 import { useSetNewFoodOnMenu } from "../../queries";
 import { Card, Text, Button, Icon } from "react-native-elements";
-import { View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import CardTitle from "../../components/CardTitle";
 import FoodCard from "../FoodList/FoodCard";
 import { centralStyles } from "../../centralStyles";
 import _ from "lodash";
+import { formatMenuDay } from "../../utils";
+import { useQuery } from "react-query";
 
 const CalendarCard = ({ menu, navigation }) => {
-  const noFood = !menu.food || menu.food.length == 0 || _.isEmpty(menu.food);
-  const setNewFoodOnMenu = useSetNewFoodOnMenu(menu.id);
+  const {
+    isLoading,
+    isError,
+    error,
+    data: menuContent,
+  } = useQuery(`datemenus/?date=${menu.date}&mealTime=${menu.mealTime}`);
+
+  const noFood =
+    !menuContent || menuContent.length == 0 || !menuContent[0]?.food;
+
+  const setNewFoodOnMenu = useSetNewFoodOnMenu(
+    menu,
+    noFood ? null : menuContent[0]?.id
+  );
 
   const handleAdd = () =>
     navigation.navigate("Weekly Menu", {
       screen: "Recipes",
-      params: { mealId: menu.id, editable: false },
+      params: { menu: menu, menuID: menuContent?.id, editable: false },
     });
 
   const handleRemove = () => {
     setNewFoodOnMenu.mutate(null);
   };
 
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (isError) {
+    console.log(error);
+    return <Text>An error occurred</Text>;
+  }
+
   if (noFood) {
     return (
       <Card containerStyle={centralStyles.cardEmpty}>
         <CardTitle
-          title={`${menu.weekDay} ${menu.mealTime}`}
+          title={`${formatMenuDay(menu.date)} ${menu.mealTime}`}
           iconRight={<Icon name="add" />}
           onPressRight={handleAdd}
         />
@@ -37,7 +60,7 @@ const CalendarCard = ({ menu, navigation }) => {
   return (
     <Card>
       <CardTitle
-        title={`${menu.weekDay} ${menu.mealTime}`}
+        title={`${formatMenuDay(menu.date)} ${menu.mealTime}`}
         iconRight={<Icon type="ionicon" name="swap-horizontal" />}
         onPressRight={handleAdd}
         iconLeft={<Icon type="ionicon" name="close" />}
@@ -45,7 +68,7 @@ const CalendarCard = ({ menu, navigation }) => {
       />
       <Card.Divider />
       <View>
-        <FoodCard id={menu.food[0]} editable={false} />
+        <FoodCard id={menuContent[0].food} editable={false} />
       </View>
     </Card>
   );

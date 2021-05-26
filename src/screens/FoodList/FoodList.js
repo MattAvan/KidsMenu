@@ -12,7 +12,8 @@ const FoodList = ({ route, navigation }) => {
     <Card>
       <FoodCard
         id={item.id}
-        mealId={route.params?.mealId}
+        menu={route.params?.menu}
+        menuID={route.params?.menuID}
         navigation={navigation}
         editable={route.params?.editable}
       />

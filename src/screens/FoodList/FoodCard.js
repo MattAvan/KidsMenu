@@ -8,14 +8,14 @@ import FoodProperty from "../../components/FoodProperty";
 import ScoreCard from "../../components/ScoreCard";
 import _ from "lodash";
 
-const FoodCard = ({ id, mealId, navigation, editable = true }) => {
+const FoodCard = ({ id, menu, menuID, navigation, editable = true }) => {
   const {
     isLoading,
     isError,
     data: foodItem,
     error,
   } = useQuery(`foods/${id}/`);
-  const setNewFoodOnMenu = useSetNewFoodOnMenu(mealId);
+  const setNewFoodOnMenu = useSetNewFoodOnMenu(menu, menuID);
 
   const handlePress = () => {
     setNewFoodOnMenu.mutate(id);
@@ -35,7 +35,7 @@ const FoodCard = ({ id, mealId, navigation, editable = true }) => {
   }
 
   return (
-    <Pressable disabled={!mealId} onPress={handlePress}>
+    <Pressable disabled={!menu} onPress={handlePress}>
       <View style={styles.mainView}>
         <View style={styles.titleView}>
           <Text style={centralStyles.foodTitle}>{foodItem.foodName}</Text>

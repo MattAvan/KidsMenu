@@ -2,18 +2,33 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { endPoint } from "./api";
 import axios from "axios";
 
-export const useSetNewFoodOnMenu = (mealId) => {
+export const useSetNewFoodOnMenu = (menu, menuDBId = null) => {
   const queryClient = useQueryClient();
-  const patchMenu = async (newFood) => {
-    await axios.patch(
-      `${endPoint}weekmenus/${mealId}/`,
-      newFood ? { food: [newFood] } : { food: [] }
-    );
+  const postOrPatchMenu = async (newFood) => {
+    if (menuDBId) {
+      if (newFood) {
+        await axios.patch(`${endPoint}datemenus/${menuDBId}/`, {
+          food: newFood,
+        });
+      } else {
+        await axios.delete(`${endPoint}datemenus/${menuDBId}/`);
+      }
+    } else {
+      if (newFood) {
+        await axios.post(`${endPoint}datemenus/`, {
+          date: menu.date,
+          mealTime: menu.mealTime,
+          food: newFood,
+        });
+      }
+    }
   };
 
-  const mutation = useMutation(patchMenu, {
+  const mutation = useMutation(postOrPatchMenu, {
     onSuccess: () => {
-      queryClient.invalidateQueries("weekmenus/");
+      queryClient.invalidateQueries(
+        `datemenus/?date=${menu.date}&mealTime=${menu.mealTime}`
+      );
     },
     onError: (error, variables, context) => {
       console.log(error);
@@ -26,7 +41,6 @@ export const useSetNewFoodOnMenu = (mealId) => {
 export const useSaveFood = (foodID) => {
   const queryClient = useQueryClient();
   const putOrPostFood = async (newFood) => {
-    console.log(newFood);
     //Tranformation for kids : from full data to id only
     if (newFood.scores) {
       for (let i = 0; i < newFood.scores.length; i++) {
