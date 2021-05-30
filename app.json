@@ -29,9 +29,12 @@
       "favicon": "./assets/favicon.png",
       "build": {
         "babel": {
-          "include": ["@codler/react-native-keyboard-aware-scroll-view"]
+          "include": [
+            "@codler/react-native-keyboard-aware-scroll-view"
+          ]
         }
       }
-    }
+    },
+    "description": ""
   }
 }

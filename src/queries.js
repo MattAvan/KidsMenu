@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useState, useEffect } from "react";
 import { endPoint } from "./api";
 import axios from "axios";
 
@@ -96,4 +97,26 @@ export const useDeleteFood = (foodID) => {
     },
   });
   return mutation;
+};
+
+export const useSearchFood = (searchText) => {
+  const { isLoading, isError, data, error } = useQuery(
+    ["foodSearch", searchText],
+    async () => {
+      const data = await axios(`${endPoint}foods/?search=${searchText}`);
+      return data.data;
+    }
+  );
+  return { isLoading, isError, data, error };
+};
+
+export const useDebounce = (value, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+    return () => clearTimeout(handler);
+  }, [value]);
+  return debouncedValue;
 };

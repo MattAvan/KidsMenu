@@ -15,7 +15,7 @@ const FoodCard = ({ id, menu, menuID, navigation, editable = true }) => {
     data: foodItem,
     error,
   } = useQuery(`foods/${id}/`);
-  console.log(menu);
+
   const setNewFoodOnMenu = useSetNewFoodOnMenu(menu, menuID);
 
   const handlePress = () => {

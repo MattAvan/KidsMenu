@@ -1,12 +1,19 @@
-import React from "react";
-import { useQuery } from "react-query";
+import React, { useState, useCallback } from "react";
+import { useSearchFood, useDebounce } from "../../queries";
 import FoodCard from "./FoodCard";
 import { View, FlatList, ActivityIndicator } from "react-native";
-import { Card, Button, Icon, Text } from "react-native-elements";
+import { Card, Button, Icon, Text, SearchBar } from "react-native-elements";
 import { centralStyles } from "../../centralStyles";
 
 const FoodList = ({ route, navigation }) => {
-  const { isLoading, isError, data: foods, error } = useQuery("foods/");
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
+  const {
+    isLoading,
+    isError,
+    data: foods,
+    error,
+  } = useSearchFood(debouncedSearch);
 
   const renderFoodCard = ({ item }) => (
     <Card>
@@ -32,6 +39,12 @@ const FoodList = ({ route, navigation }) => {
   return (
     <View style={centralStyles.screenMainView}>
       <Card>
+        <SearchBar
+          value={search}
+          onChangeText={(text) => setSearch(text)}
+          placeholder="Search for food"
+          lightTheme
+        />
         <Button
           onPress={() => navigation.navigate("Edit Food")}
           title="Add Recipe"
@@ -39,7 +52,6 @@ const FoodList = ({ route, navigation }) => {
           type="outline"
         />
       </Card>
-
       <FlatList
         data={foods}
         renderItem={renderFoodCard}
