@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Icon } from "react-native-elements";
 import WeekMenu from "../screens/WeekMenu/WeekMenu";
-import FoodList from "../screens/FoodList/FoodList";
+import FoodHeader from "../screens/FoodList/FoodHeader";
 import FoodEdit from "../screens/FoodEdit/FoodEdit";
 
 const Tab = createBottomTabNavigator();
@@ -15,7 +15,7 @@ const WeekMenuRouter = () => {
   return (
     <WeekMenuStack.Navigator>
       <WeekMenuStack.Screen name="Menu of the Week" component={WeekMenu} />
-      <WeekMenuStack.Screen name="Recipes" component={FoodList} />
+      <WeekMenuStack.Screen name="Recipes" component={FoodHeader} />
     </WeekMenuStack.Navigator>
   );
 };
@@ -23,7 +23,7 @@ const WeekMenuRouter = () => {
 const FoodListRouter = () => {
   return (
     <FoodListStack.Navigator>
-      <FoodListStack.Screen name="Recipes" component={FoodList} />
+      <FoodListStack.Screen name="Recipes" component={FoodHeader} />
       <FoodListStack.Screen name="Edit Food" component={FoodEdit} />
     </FoodListStack.Navigator>
   );
