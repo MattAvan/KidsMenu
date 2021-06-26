@@ -61,6 +61,7 @@ export const useSaveFood = (foodID) => {
         newFood.scores[i].kid = newFood.scores[i].kid.id;
       }
     }
+    console.log(newFood);
     if (foodID) {
       await axios.patch(`${endPoint}foods/${foodID}/`, {
         ...newFood,
@@ -73,7 +74,8 @@ export const useSaveFood = (foodID) => {
 
   const mutation = useMutation(putOrPostFood, {
     onSuccess: () => {
-      queryClient.invalidateQueries(`foods/`);
+      const queryName = foodID ? `foods/${foodID}/` : "foodSearch";
+      queryClient.invalidateQueries(queryName);
     },
     onError: (error, variables, context) => {
       console.log(error);
@@ -90,7 +92,7 @@ export const useDeleteFood = (foodID) => {
 
   const mutation = useMutation(deleteFood, {
     onSuccess: () => {
-      queryClient.invalidateQueries(`foods/`);
+      queryClient.invalidateQueries(`foodSearch`);
     },
     onError: (error, variables, context) => {
       console.log(error);

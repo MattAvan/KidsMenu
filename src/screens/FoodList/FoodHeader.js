@@ -11,7 +11,7 @@ const FoodHeader = ({ route, navigation }) => {
 
   return (
     <View style={centralStyles.screenMainView}>
-      <Card>
+      <Card containerStyle={centralStyles.cardLayout}>
         <SearchBar
           value={search}
           onChangeText={(text) => setSearch(text)}

@@ -43,7 +43,9 @@ const CalendarCard = ({ menu, navigation }) => {
 
   if (noFood) {
     return (
-      <Card containerStyle={centralStyles.cardEmpty}>
+      <Card
+        containerStyle={[centralStyles.cardLayout, centralStyles.cardEmpty]}
+      >
         <CardTitle
           title={`${formatMenuDay(menu.date)} ${menu.mealTime}`}
           iconRight={<Icon name="add" />}
@@ -55,7 +57,7 @@ const CalendarCard = ({ menu, navigation }) => {
   }
 
   return (
-    <Card>
+    <Card containerStyle={centralStyles.cardLayout}>
       <CardTitle
         title={`${formatMenuDay(menu.date)} ${menu.mealTime}`}
         iconRight={<Icon type="ionicon" name="swap-horizontal" />}

@@ -14,7 +14,7 @@ const FoodList = ({ route, navigation, debouncedSearch }) => {
   } = useSearchFood(debouncedSearch);
 
   const renderFoodCard = ({ item }) => (
-    <Card>
+    <Card containerStyle={centralStyles.cardLayout}>
       <FoodCard
         id={item.id}
         menu={route.params?.menu}

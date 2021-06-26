@@ -19,6 +19,10 @@ export const centralStyles = StyleSheet.create({
     //fontSize: 14,
     justifyContent: "flex-end",
   },
+  cardLayout: {
+    marginLeft: 0,
+    marginRight: 0,
+  },
 });
 
 export const iconConfig = {
