@@ -15,7 +15,7 @@ const screen = Dimensions.get("screen");
 export default function WeekPlanning({ navigation }) {
   const [startingDay, setStartingDay] = useState(getPreviousMonday());
   const [dimensions, setDimensions] = useState({ window, screen });
-  console.log(dimensions);
+  //console.log(dimensions);
 
   const onChange = ({ window, screen }) => {
     setDimensions({ window, screen });
@@ -135,5 +135,5 @@ const styles = StyleSheet.create({
   menuCardMedium: {
     width: "50%",
   },
-  menuCardLarge: { height: "50%", width: 330 },
+  menuCardLarge: { height: "50%", width: 400 },
 });

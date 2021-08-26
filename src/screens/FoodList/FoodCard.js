@@ -85,10 +85,9 @@ const styles = StyleSheet.create({
   },
   titleView: {
     flexDirection: "row",
-    flex: 1,
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: 8,
+    marginBottom: 4,
   },
   bodyView: {
     flexDirection: "row",

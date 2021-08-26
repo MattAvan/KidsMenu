@@ -9,7 +9,7 @@ import _ from "lodash";
 import { formatMenuDay } from "../../utils";
 import { useQuery } from "react-query";
 
-const CalendarCard = ({ menu, navigation }) => {
+const PlanningCard = ({ menu, navigation }) => {
   const {
     isLoading,
     isError,
@@ -66,11 +66,10 @@ const CalendarCard = ({ menu, navigation }) => {
         onPressLeft={handleRemove}
       />
       <Card.Divider />
-      <View>
-        <FoodCard id={menuContent[0].food} menu={menu} editable={false} />
-      </View>
+
+      <FoodCard id={menuContent[0].food} menu={menu} editable={false} />
     </Card>
   );
 };
 
-export default CalendarCard;
+export default PlanningCard;
