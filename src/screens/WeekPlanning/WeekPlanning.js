@@ -1,5 +1,10 @@
 import React, { useState, useMemo, useEffect, useCallback } from "react";
-import { ScrollView, StyleSheet, View, Dimensions } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import { Button } from "react-native-elements";
 import PlanningCard from "./PlanningCard";
 import { centralStyles } from "../../centralStyles";
@@ -9,24 +14,9 @@ import {
   calculateNewStartingDay,
 } from "../../utils";
 
-const window = Dimensions.get("window");
-const screen = Dimensions.get("screen");
-
 export default function WeekPlanning({ navigation }) {
   const [startingDay, setStartingDay] = useState(getPreviousMonday());
-  const [dimensions, setDimensions] = useState({ window, screen });
-  //console.log(dimensions);
-
-  const onChange = ({ window, screen }) => {
-    setDimensions({ window, screen });
-  };
-
-  useEffect(() => {
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
-  });
+  const { height, width } = useWindowDimensions();
 
   const breakPoint = useMemo(() => {
     let mainAreaStyle;
@@ -37,11 +27,11 @@ export default function WeekPlanning({ navigation }) {
     let windowStyle = centralStyles.screenMainView;
     let previousIcon = "angle-double-up";
     let nextIcon = "angle-double-down";
-    if (dimensions.window.width < 575) {
+    if (width < 575) {
       mainAreaStyle = styles.mainAreaSmallMedium;
       menuCardStyle = styles.menuCardSmall;
       scrollViewIsHorizontal = false;
-    } else if (dimensions.window.width < 1000) {
+    } else if (width < 1000) {
       mainAreaStyle = styles.mainAreaSmallMedium;
       menuCardStyle = styles.menuCardMedium;
       scrollViewIsHorizontal = false;
@@ -68,7 +58,7 @@ export default function WeekPlanning({ navigation }) {
       previousIcon,
       nextIcon,
     };
-  }, [dimensions]);
+  }, [height, width]);
 
   const menuArray = useMemo(
     () => createMenuArray(startingDay, 7),
