@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Icon } from "react-native-elements";
 import FoodHeader from "../screens/FoodList/FoodHeader";
-import FoodEdit from "../screens/FoodEdit/FoodEdit";
+import FoodEdit from "../screens/FoodEdit/FoodEditNew";
 import WeekPlanning from "../screens/WeekPlanning/WeekPlanning";
 
 const Tab = createBottomTabNavigator();

@@ -49,7 +49,8 @@ const FoodCard = ({ id, menu, menuID, navigation, editable = true }) => {
             containerStyle={styles.avatarView}
             size="xlarge"
             source={
-              foodItem.foodImage ? { uri: foodItem.foodImage } : undefined
+              //foodItem.foodImage ? { uri: foodItem.foodImage } : undefined
+              { uri: foodItem.foodImageURL }
             }
             title={foodItem.foodName[0]}
           />

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useState, useEffect } from "react";
-import { endPoint } from "./api";
+import { endPoint, pictureUploadEndPoint } from "./api";
+import { cloudinaryUploadPreset } from "./cloudkey.json";
 import axios from "axios";
 
 export const useSetNewFoodOnMenu = (menu, menuDBId = null) => {
@@ -121,4 +122,25 @@ export const useDebounce = (value, delay) => {
     return () => clearTimeout(handler);
   }, [value]);
   return debouncedValue;
+};
+
+export const uploadPicture = async (photo) => {
+  const base64Build = photo?.base64
+    ? `data:image/jpeg;base64,${photo.base64}`
+    : photo.uri;
+  const dataToUpload = {
+    file: base64Build,
+    upload_preset: cloudinaryUploadPreset,
+  };
+  console.log(dataToUpload);
+  try {
+    const result = await axios.post(
+      "https://api.cloudinary.com/v1_1/dar1xcedk/image/upload",
+      dataToUpload
+    );
+    console.log(result);
+    return result.data;
+  } catch (err) {
+    console.error(err);
+  }
 };
