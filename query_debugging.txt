@@ -1,0 +1,7 @@
+https://stackoverflow.com/questions/53096811/axios-unhandled-promise-rejection
+
+try {
+  const res = await axios.post(xxx, yyy)
+} catch (e) {
+  console.error(e.response)
+}

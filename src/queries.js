@@ -1,28 +1,70 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useState, useEffect } from "react";
-import { endPoint, pictureUploadEndPoint } from "./api";
+import { endPoint, loginEndPoint, pictureUploadEndPoint } from "./api";
 import { cloudinaryUploadPreset } from "./cloudkey.json";
 import axios from "axios";
+import * as SecureStore from "expo-secure-store";
+import { tokenState } from "./localState";
+import { useRecoilValue } from "recoil";
+
+// Hook to use to get the authorization headers
+export const useAxiosConfig = () => {
+  const token = useRecoilValue(tokenState);
+  const axiosConfig = {
+    headers: { Authorization: token },
+  };
+  return axiosConfig;
+};
+
+export const useLogin = (setToken) => {
+  const queryClient = useQueryClient();
+
+  const postCredentials = async (credentials) => {
+    return await axios.post(`${loginEndPoint}login/`, credentials);
+  };
+
+  const mutation = useMutation(postCredentials, {
+    onSuccess: async (data) => {
+      const tokenValue = JSON.parse(data.request["_response"]).key;
+      await SecureStore.setItemAsync("token", tokenValue);
+      setToken(`Token ${tokenValue}`);
+    },
+    onError: async (error, query) => {
+      console.log(error.response.data);
+      console.log(query);
+    },
+  });
+  return mutation;
+};
 
 export const useSetNewFoodOnMenu = (menu, menuDBId = null) => {
   const queryClient = useQueryClient();
+  const axiosConfig = useAxiosConfig();
 
   const postOrPatchMenu = async (newFood) => {
     if (menuDBId) {
       if (newFood) {
-        await axios.patch(`${endPoint}datemenus/${menuDBId}/`, {
-          food: newFood,
-        });
+        await axios.patch(
+          `${endPoint}datemenus/${menuDBId}/`,
+          {
+            food: newFood,
+          },
+          axiosConfig
+        );
       } else {
-        await axios.delete(`${endPoint}datemenus/${menuDBId}/`);
+        await axios.delete(`${endPoint}datemenus/${menuDBId}/`, axiosConfig);
       }
     } else {
       if (newFood) {
-        await axios.post(`${endPoint}datemenus/`, {
-          date: menu.date,
-          mealTime: menu.mealTime,
-          food: newFood,
-        });
+        await axios.post(
+          `${endPoint}datemenus/`,
+          {
+            date: menu.date,
+            mealTime: menu.mealTime,
+            food: newFood,
+          },
+          axiosConfig
+        );
       }
     }
   };
@@ -55,6 +97,8 @@ export const useSetNewFoodOnMenu = (menu, menuDBId = null) => {
 
 export const useSaveFood = (foodID) => {
   const queryClient = useQueryClient();
+  const axiosConfig = useAxiosConfig();
+
   const putOrPostFood = async (newFood) => {
     //Tranformation for kids : from full data to id only
     if (newFood.scores) {
@@ -64,12 +108,16 @@ export const useSaveFood = (foodID) => {
     }
     console.log(newFood);
     if (foodID) {
-      await axios.patch(`${endPoint}foods/${foodID}/`, {
-        ...newFood,
-        id: foodID,
-      });
+      await axios.patch(
+        `${endPoint}foods/${foodID}/`,
+        {
+          ...newFood,
+          id: foodID,
+        },
+        axiosConfig
+      );
     } else {
-      await axios.post(`${endPoint}foods/`, newFood);
+      await axios.post(`${endPoint}foods/`, newFood, axiosConfig);
     }
   };
 
@@ -87,8 +135,9 @@ export const useSaveFood = (foodID) => {
 
 export const useDeleteFood = (foodID) => {
   const queryClient = useQueryClient();
+  const axiosConfig = useAxiosConfig();
   const deleteFood = async () => {
-    await axios.delete(`${endPoint}foods/${foodID}/`);
+    await axios.delete(`${endPoint}foods/${foodID}/`, axiosConfig);
   };
 
   const mutation = useMutation(deleteFood, {
@@ -103,10 +152,14 @@ export const useDeleteFood = (foodID) => {
 };
 
 export const useSearchFood = (searchText) => {
+  const axiosConfig = useAxiosConfig();
   const { isLoading, isError, data, error } = useQuery(
     ["foodSearch", searchText],
     async () => {
-      const data = await axios(`${endPoint}foods/?search=${searchText}`);
+      const data = await axios(
+        `${endPoint}foods/?search=${searchText}`,
+        axiosConfig
+      );
       return data.data;
     }
   );
@@ -134,10 +187,7 @@ export const uploadPicture = async (photo) => {
   };
   console.log(dataToUpload);
   try {
-    const result = await axios.post(
-      "https://api.cloudinary.com/v1_1/dar1xcedk/image/upload",
-      dataToUpload
-    );
+    const result = await axios.post(pictureUploadEndPoint, dataToUpload);
     console.log(result);
     return result.data;
   } catch (err) {

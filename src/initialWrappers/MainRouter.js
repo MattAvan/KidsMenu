@@ -6,10 +6,15 @@ import { Icon } from "react-native-elements";
 import FoodHeader from "../screens/FoodList/FoodHeader";
 import FoodEdit from "../screens/FoodEdit/FoodEditNew";
 import WeekPlanning from "../screens/WeekPlanning/WeekPlanning";
+import SignUpScreen from "../screens/Auth/SignUpScreen";
+import LoginScreen from "../screens/Auth/LoginScreen";
+import { useRecoilValue } from "recoil";
+import { isLoggedInState } from "../localState";
 
 const Tab = createBottomTabNavigator();
 const WeekMenuStack = createStackNavigator();
 const FoodListStack = createStackNavigator();
+const LoginStack = createStackNavigator();
 
 const WeekMenuRouter = () => {
   return (
@@ -29,29 +34,43 @@ const FoodListRouter = () => {
   );
 };
 
+const LoginRouter = () => {
+  return (
+    <LoginStack.Navigator>
+      <LoginStack.Screen name="Login" component={LoginScreen} />
+      <LoginStack.Screen name="Sign Up" component={SignUpScreen} />
+    </LoginStack.Navigator>
+  );
+};
+
 const MainRouter = () => {
+  const isLoggedIn = useRecoilValue(isLoggedInState);
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Weekly Menu"
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            if (route.name === "Weekly Menu") {
-              iconName = focused ? "calendar" : "calendar-outline";
-            } else if (route.name === "Recipes") {
-              iconName = focused ? "library" : "library-outline";
-            }
-            return <Icon type="ionicon" name={iconName} />;
-          },
-        })}
-        tabBarOptions={{
-          color: "blue",
-        }}
-      >
-        <Tab.Screen name="Weekly Menu" component={WeekMenuRouter} />
-        <Tab.Screen name="Recipes" component={FoodListRouter} />
-      </Tab.Navigator>
+      {isLoggedIn ? (
+        <Tab.Navigator
+          initialRouteName="Weekly Menu"
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+              if (route.name === "Weekly Menu") {
+                iconName = focused ? "calendar" : "calendar-outline";
+              } else if (route.name === "Recipes") {
+                iconName = focused ? "library" : "library-outline";
+              }
+              return <Icon type="ionicon" name={iconName} />;
+            },
+          })}
+          tabBarOptions={{
+            color: "blue",
+          }}
+        >
+          <Tab.Screen name="Weekly Menu" component={WeekMenuRouter} />
+          <Tab.Screen name="Recipes" component={FoodListRouter} />
+        </Tab.Navigator>
+      ) : (
+        <LoginRouter />
+      )}
     </NavigationContainer>
   );
 };
