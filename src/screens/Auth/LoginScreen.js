@@ -3,18 +3,20 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { useQueryClient } from "react-query";
 import { isLoggedInState, tokenState } from "../../localState";
 import * as SecureStore from "expo-secure-store";
-import { View } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { useLogin } from "../../queries";
 import axios from "axios";
 import { endPoint } from "../../api";
+import LogoImage from "../../KidsMenu.png";
+import { stubFalse } from "lodash";
 
 const LoginScreen = () => {
   const [token, setToken] = useRecoilState(tokenState);
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const sendCredentials = useLogin(setIsLoggedIn, setToken);
+  const sendCredentials = useLogin(setToken);
   const queryClient = useQueryClient();
 
   // Flow: check if the token is in the state. If it is not (empty when loading the app) get it
@@ -26,7 +28,9 @@ const LoginScreen = () => {
       //Next line: to uncomment in case i need to remove the secured token
       //await SecureStore.deleteItemAsync("token");
       const secureToken = await SecureStore.getItemAsync("token");
-      setToken(`Token ${secureToken}`);
+      if (secureToken) {
+        setToken(`Token ${secureToken}`);
+      }
     } else {
       const authDefaultQueryFn = async ({ queryKey }) => {
         const { data } = await axios(`${endPoint}${queryKey[0]}`, {
@@ -42,29 +46,47 @@ const LoginScreen = () => {
   }, [token]);
 
   const pressButton = async () => {
-    await sendCredentials.mutate({ email: email, password: password });
+    await sendCredentials.mutate({
+      email: email.toLowerCase(),
+      password: password,
+    });
   };
 
   return (
-    <View>
-      <Input
-        label="Email"
-        placeholder="email@address.com"
-        textContentType="emailAddress"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-      />
-      <Input
-        label="Password"
-        placeholder="Password"
-        textContentType="password"
-        secureTextEntry={true}
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
-      <Button title="Login" onPress={pressButton} />
+    <View style={styles.mainView}>
+      <View style={styles.imageView}>
+        <Image source={LogoImage} style={styles.image} />
+      </View>
+      <View style={styles.formView}>
+        <Input
+          label="Email"
+          placeholder="email@address.com"
+          textContentType="emailAddress"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+        />
+        <Input
+          label="Password"
+          placeholder="Password"
+          textContentType="password"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
+        <Button title="Login" onPress={pressButton} />
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  mainView: { flexDirection: "column", justifyContent: "space-around" },
+  imageView: {},
+  formView: {},
+  image: {
+    width: "100%",
+    resizeMode: "contain",
+  },
+});
 
 export default LoginScreen;

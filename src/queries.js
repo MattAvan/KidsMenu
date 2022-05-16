@@ -17,7 +17,7 @@ export const useAxiosConfig = () => {
 };
 
 export const useLogin = (setToken) => {
-  const queryClient = useQueryClient();
+  //const queryClient = useQueryClient();
 
   const postCredentials = async (credentials) => {
     return await axios.post(`${loginEndPoint}login/`, credentials);
@@ -106,7 +106,7 @@ export const useSaveFood = (foodID) => {
         newFood.scores[i].kid = newFood.scores[i].kid.id;
       }
     }
-    console.log(newFood);
+
     if (foodID) {
       await axios.patch(
         `${endPoint}foods/${foodID}/`,
@@ -185,10 +185,9 @@ export const uploadPicture = async (photo) => {
     file: base64Build,
     upload_preset: cloudinaryUploadPreset,
   };
-  console.log(dataToUpload);
+
   try {
     const result = await axios.post(pictureUploadEndPoint, dataToUpload);
-    console.log(result);
     return result.data;
   } catch (err) {
     console.error(err);
