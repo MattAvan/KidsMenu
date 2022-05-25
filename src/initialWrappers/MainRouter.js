@@ -8,6 +8,7 @@ import FoodEdit from "../screens/FoodEdit/FoodEditNew";
 import WeekPlanning from "../screens/WeekPlanning/WeekPlanning";
 import SignUpScreen from "../screens/Auth/SignUpScreen";
 import LoginScreen from "../screens/Auth/LoginScreen";
+import UserButton from "../components/UserButton";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "../localState";
 
@@ -19,8 +20,26 @@ const LoginStack = createStackNavigator();
 const WeekMenuRouter = () => {
   return (
     <WeekMenuStack.Navigator>
-      <WeekMenuStack.Screen name="Menu of the Week" component={WeekPlanning} />
-      <WeekMenuStack.Screen name="Recipes" component={FoodHeader} />
+      <WeekMenuStack.Screen
+        name="Menu of the Week"
+        component={WeekPlanning}
+        options={{
+          headerTitle: "Menu of the Week",
+          headerRight: () => {
+            return <UserButton />;
+          },
+        }}
+      />
+      <WeekMenuStack.Screen
+        name="Recipes"
+        component={FoodHeader}
+        options={{
+          headerTitle: "Recipes",
+          headerRight: () => {
+            return <UserButton />;
+          },
+        }}
+      />
     </WeekMenuStack.Navigator>
   );
 };
@@ -28,8 +47,26 @@ const WeekMenuRouter = () => {
 const FoodListRouter = () => {
   return (
     <FoodListStack.Navigator>
-      <FoodListStack.Screen name="Recipes" component={FoodHeader} />
-      <FoodListStack.Screen name="Edit Food" component={FoodEdit} />
+      <FoodListStack.Screen
+        name="Recipes"
+        component={FoodHeader}
+        options={{
+          headerTitle: "Recipes",
+          headerRight: () => {
+            return <UserButton />;
+          },
+        }}
+      />
+      <FoodListStack.Screen
+        name="Edit Food"
+        component={FoodEdit}
+        options={{
+          headerTitle: "Edit Food",
+          headerRight: () => {
+            return <UserButton />;
+          },
+        }}
+      />
     </FoodListStack.Navigator>
   );
 };
