@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useQueryClient } from "react-query";
-import { isLoggedInState, tokenState } from "../../localState";
+import { isLoggedInState, tokenState, errorState } from "../../localState";
 import * as SecureStore from "expo-secure-store";
 import { View, Image, StyleSheet } from "react-native";
 import { Input, Button } from "react-native-elements";
@@ -13,10 +13,11 @@ import { stubFalse } from "lodash";
 
 const LoginScreen = () => {
   const [token, setToken] = useRecoilState(tokenState);
+  const setError = useSetRecoilState(errorState);
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const sendCredentials = useLogin(setToken);
+  const sendCredentials = useLogin(setToken, setError);
   const queryClient = useQueryClient();
 
   // Flow: check if the token is in the state. If it is not (empty when loading the app) get it

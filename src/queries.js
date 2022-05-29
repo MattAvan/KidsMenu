@@ -4,7 +4,7 @@ import { endPoint, loginEndPoint, pictureUploadEndPoint } from "./api";
 import { cloudinaryUploadPreset } from "./cloudkey.json";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-import { tokenState } from "./localState";
+import { tokenState, errorState } from "./localState";
 import { useRecoilValue } from "recoil";
 
 // Hook to use to get the authorization headers
@@ -16,7 +16,7 @@ export const useAxiosConfig = () => {
   return axiosConfig;
 };
 
-export const useLogin = (setToken) => {
+export const useLogin = (setToken, setError) => {
   //const queryClient = useQueryClient();
 
   const postCredentials = async (credentials) => {
@@ -30,8 +30,13 @@ export const useLogin = (setToken) => {
       setToken(`Token ${tokenValue}`);
     },
     onError: async (error, query) => {
-      console.log(error.response.data);
+      console.log(error.response.status);
       console.log(query);
+      if (error.response.status == "400") {
+        setError("wrongCredentialsError");
+      } else {
+        setError("unknownError");
+      }
     },
   });
   return mutation;
