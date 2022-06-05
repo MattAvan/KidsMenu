@@ -11,8 +11,7 @@ let errorMessages = {
 
 const ErrorToast = () => {
   const [error, setError] = useRecoilState(errorState);
-  console.log(error);
-  console.log(errorMessages[error]);
+  //console.log(error);
   if (error) {
     let toast = Toast.show(errorMessages[error], {
       duration: Toast.durations.LONG,

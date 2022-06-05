@@ -30,8 +30,8 @@ export const useLogin = (setToken, setError) => {
       setToken(`Token ${tokenValue}`);
     },
     onError: async (error, query) => {
-      console.log(error.response.status);
-      console.log(query);
+      //console.log(error.response.status);
+      //console.log(query);
       if (error.response.status == "400") {
         setError("wrongCredentialsError");
       } else {
