@@ -11,7 +11,7 @@ const UserButton = () => {
 const styles = StyleSheet.create({
   avatarView: {
     backgroundColor: "grey",
-    marginRight: 2,
+    marginRight: 10,
   },
 });
 

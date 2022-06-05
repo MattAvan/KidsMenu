@@ -3,13 +3,12 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { useQueryClient } from "react-query";
 import { isLoggedInState, tokenState, errorState } from "../../localState";
 import * as SecureStore from "expo-secure-store";
-import { View, Image, StyleSheet } from "react-native";
-import { Input, Button } from "react-native-elements";
+import { View, StyleSheet } from "react-native";
+import { Input, Button, Image } from "react-native-elements";
 import { useLogin } from "../../queries";
 import axios from "axios";
 import { endPoint } from "../../api";
 import LogoImage from "../../KidsMenu.png";
-import { stubFalse } from "lodash";
 
 const LoginScreen = () => {
   const [token, setToken] = useRecoilState(tokenState);
@@ -82,10 +81,11 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   mainView: { flexDirection: "column", justifyContent: "space-around" },
-  imageView: {},
+  imageView: { justifyContent: "center", alignItems: "center" },
   formView: {},
   image: {
-    width: "100%",
+    width: 300,
+    height: 200,
     resizeMode: "contain",
   },
 });
