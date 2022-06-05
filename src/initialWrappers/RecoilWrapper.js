@@ -1,11 +1,11 @@
 import React from "react";
 import { RecoilRoot } from "recoil";
-import QueryWrapper from "./QueryWrapper";
+import ErrorToast from "./ErrorToast";
 
 const RecoilWrapper = () => {
   return (
     <RecoilRoot>
-      <QueryWrapper />
+      <ErrorToast />
     </RecoilRoot>
   );
 };

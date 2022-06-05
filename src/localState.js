@@ -12,5 +12,5 @@ export const tokenState = atom({
 
 export const errorState = atom({
   key: "errorState",
-  default: "",
+  default: null,
 });
