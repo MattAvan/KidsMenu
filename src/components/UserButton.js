@@ -7,7 +7,7 @@ const UserButton = ({ navigation }) => {
     <Avatar
       size="small"
       rounded
-      title="M"
+      icon={{ name: "user", type: "font-awesome-5" }}
       containerStyle={styles.avatarView}
       onPress={() => navigation.toggleDrawer()}
     />

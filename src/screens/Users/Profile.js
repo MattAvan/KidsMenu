@@ -4,7 +4,6 @@ import { Text, Button } from "react-native-elements";
 import { View, StyleSheet } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { isLoggedInState, tokenState } from "../../localState";
-import { endPoint } from "../../api";
 import { useQuery } from "react-query";
 
 const Profile = () => {
@@ -17,7 +16,8 @@ const Profile = () => {
     error,
   } = useQuery(`dj-rest-auth/user/`);
 
-  console.log(error);
+  console.log(user);
+
   const logout = async () => {
     await SecureStore.deleteItemAsync("token");
     setToken("");
@@ -25,6 +25,7 @@ const Profile = () => {
   };
   return (
     <View style={styles.mainView}>
+      <Text>{user.email}</Text>
       <Button title="logout" onPress={logout} />
     </View>
   );
