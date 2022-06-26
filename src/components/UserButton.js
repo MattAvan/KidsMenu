@@ -2,9 +2,15 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Avatar, Text } from "react-native-elements";
 
-const UserButton = () => {
+const UserButton = ({ navigation }) => {
   return (
-    <Avatar size="small" rounded title="M" containerStyle={styles.avatarView} />
+    <Avatar
+      size="small"
+      rounded
+      title="M"
+      containerStyle={styles.avatarView}
+      onPress={() => navigation.toggleDrawer()}
+    />
   );
 };
 

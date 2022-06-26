@@ -11,11 +11,14 @@ import LoginScreen from "../screens/Auth/LoginScreen";
 import UserButton from "../components/UserButton";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "../localState";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import Profile from "../screens/Users/Profile";
 
 const Tab = createBottomTabNavigator();
 const WeekMenuStack = createStackNavigator();
 const FoodListStack = createStackNavigator();
 const LoginStack = createStackNavigator();
+const MenuDrawer = createDrawerNavigator();
 
 const WeekMenuRouter = () => {
   return (
@@ -23,22 +26,22 @@ const WeekMenuRouter = () => {
       <WeekMenuStack.Screen
         name="Menu of the Week"
         component={WeekPlanning}
-        options={{
+        options={({ route, navigation }) => ({
           headerTitle: "Menu of the Week",
           headerRight: () => {
-            return <UserButton />;
+            return <UserButton navigation={navigation} />;
           },
-        }}
+        })}
       />
       <WeekMenuStack.Screen
         name="Recipes"
         component={FoodHeader}
-        options={{
+        options={({ route, navigation }) => ({
           headerTitle: "Recipes",
           headerRight: () => {
-            return <UserButton />;
+            return <UserButton navigation={navigation} />;
           },
-        }}
+        })}
       />
     </WeekMenuStack.Navigator>
   );
@@ -50,22 +53,22 @@ const FoodListRouter = () => {
       <FoodListStack.Screen
         name="Recipes"
         component={FoodHeader}
-        options={{
+        options={({ route, navigation }) => ({
           headerTitle: "Recipes",
           headerRight: () => {
-            return <UserButton />;
+            return <UserButton navigation={navigation} />;
           },
-        }}
+        })}
       />
       <FoodListStack.Screen
         name="Edit Food"
         component={FoodEdit}
-        options={{
+        options={({ route, navigation }) => ({
           headerTitle: "Edit Food",
           headerRight: () => {
-            return <UserButton />;
+            return <UserButton navigation={navigation} />;
           },
-        }}
+        })}
       />
     </FoodListStack.Navigator>
   );
@@ -80,31 +83,43 @@ const LoginRouter = () => {
   );
 };
 
+const TabRouter = () => {
+  return (
+    <Tab.Navigator
+      initialRouteName="Weekly Menu"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === "Weekly Menu") {
+            iconName = focused ? "calendar" : "calendar-outline";
+          } else if (route.name === "Recipes") {
+            iconName = focused ? "library" : "library-outline";
+          }
+          return <Icon type="ionicon" name={iconName} />;
+        },
+      })}
+      tabBarOptions={{
+        color: "blue",
+      }}
+    >
+      <Tab.Screen name="Weekly Menu" component={WeekMenuRouter} />
+      <Tab.Screen name="Recipes" component={FoodListRouter} />
+    </Tab.Navigator>
+  );
+};
+
 const MainRouter = () => {
   const isLoggedIn = useRecoilValue(isLoggedInState);
   return (
     <NavigationContainer>
       {isLoggedIn ? (
-        <Tab.Navigator
-          initialRouteName="Weekly Menu"
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === "Weekly Menu") {
-                iconName = focused ? "calendar" : "calendar-outline";
-              } else if (route.name === "Recipes") {
-                iconName = focused ? "library" : "library-outline";
-              }
-              return <Icon type="ionicon" name={iconName} />;
-            },
-          })}
-          tabBarOptions={{
-            color: "blue",
-          }}
+        <MenuDrawer.Navigator
+          initialRouteName="Tab"
+          drawerContent={(props) => <Profile {...props} />}
+          drawerPosition="left"
         >
-          <Tab.Screen name="Weekly Menu" component={WeekMenuRouter} />
-          <Tab.Screen name="Recipes" component={FoodListRouter} />
-        </Tab.Navigator>
+          <MenuDrawer.Screen name="Tab" component={TabRouter} />
+        </MenuDrawer.Navigator>
       ) : (
         <LoginRouter />
       )}
