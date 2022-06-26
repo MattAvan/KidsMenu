@@ -20,7 +20,7 @@ export const useLogin = (setToken, setError) => {
   //const queryClient = useQueryClient();
 
   const postCredentials = async (credentials) => {
-    return await axios.post(`${loginEndPoint}login/`, credentials);
+    return await axios.post(`${endPoint}dj-rest-auth/login/`, credentials);
   };
 
   const mutation = useMutation(postCredentials, {
@@ -50,19 +50,22 @@ export const useSetNewFoodOnMenu = (menu, menuDBId = null) => {
     if (menuDBId) {
       if (newFood) {
         await axios.patch(
-          `${endPoint}datemenus/${menuDBId}/`,
+          `${endPoint}kidsbackend/datemenus/${menuDBId}/`,
           {
             food: newFood,
           },
           axiosConfig
         );
       } else {
-        await axios.delete(`${endPoint}datemenus/${menuDBId}/`, axiosConfig);
+        await axios.delete(
+          `${endPoint}kidsbackend/datemenus/${menuDBId}/`,
+          axiosConfig
+        );
       }
     } else {
       if (newFood) {
         await axios.post(
-          `${endPoint}datemenus/`,
+          `${endPoint}kidsbackend/datemenus/`,
           {
             date: menu.date,
             mealTime: menu.mealTime,
@@ -73,7 +76,7 @@ export const useSetNewFoodOnMenu = (menu, menuDBId = null) => {
       }
     }
   };
-  const queryKey = `datemenus/?date=${menu?.date}&mealTime=${menu?.mealTime}`;
+  const queryKey = `kidsbackend/datemenus/?date=${menu?.date}&mealTime=${menu?.mealTime}`;
 
   const mutation = useMutation(postOrPatchMenu, {
     onMutate: async (newFood) => {
@@ -114,7 +117,7 @@ export const useSaveFood = (foodID) => {
 
     if (foodID) {
       await axios.patch(
-        `${endPoint}foods/${foodID}/`,
+        `${endPoint}kidsbackend/foods/${foodID}/`,
         {
           ...newFood,
           id: foodID,
@@ -122,13 +125,15 @@ export const useSaveFood = (foodID) => {
         axiosConfig
       );
     } else {
-      await axios.post(`${endPoint}foods/`, newFood, axiosConfig);
+      await axios.post(`${endPoint}kidsbackend/foods/`, newFood, axiosConfig);
     }
   };
 
   const mutation = useMutation(putOrPostFood, {
     onSuccess: () => {
-      const queryName = foodID ? `foods/${foodID}/` : "foodSearch";
+      const queryName = foodID
+        ? `kidsbackend/foods/${foodID}/`
+        : "kidsbackend/foodSearch";
       queryClient.invalidateQueries(queryName);
     },
     onError: (error, variables, context) => {
@@ -142,12 +147,12 @@ export const useDeleteFood = (foodID) => {
   const queryClient = useQueryClient();
   const axiosConfig = useAxiosConfig();
   const deleteFood = async () => {
-    await axios.delete(`${endPoint}foods/${foodID}/`, axiosConfig);
+    await axios.delete(`${endPoint}kidsbackend/foods/${foodID}/`, axiosConfig);
   };
 
   const mutation = useMutation(deleteFood, {
     onSuccess: () => {
-      queryClient.invalidateQueries(`foodSearch`);
+      queryClient.invalidateQueries(`kidsbackend/foodSearch`);
     },
     onError: (error, variables, context) => {
       console.log(error);
@@ -159,10 +164,10 @@ export const useDeleteFood = (foodID) => {
 export const useSearchFood = (searchText) => {
   const axiosConfig = useAxiosConfig();
   const { isLoading, isError, data, error } = useQuery(
-    ["foodSearch", searchText],
+    ["kidsbackend/foodSearch", searchText],
     async () => {
       const data = await axios(
-        `${endPoint}foods/?search=${searchText}`,
+        `${endPoint}kidsbackend/foods/?search=${searchText}`,
         axiosConfig
       );
       return data.data;

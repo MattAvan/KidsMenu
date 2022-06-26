@@ -15,7 +15,9 @@ const PlanningCard = ({ menu, navigation }) => {
     isError,
     error,
     data: menuContent,
-  } = useQuery(`datemenus/?date=${menu.date}&mealTime=${menu.mealTime}`);
+  } = useQuery(
+    `kidsbackend/datemenus/?date=${menu.date}&mealTime=${menu.mealTime}`
+  );
 
   const noFood =
     !menuContent || menuContent.length == 0 || !menuContent[0]?.food;

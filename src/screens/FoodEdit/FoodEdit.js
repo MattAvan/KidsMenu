@@ -18,7 +18,12 @@ const emptyFood = {
 };
 
 const FoodEdit = ({ route, navigation }) => {
-  const { isLoading, isError, data: kids, error } = useQuery("kids/");
+  const {
+    isLoading,
+    isError,
+    data: kids,
+    error,
+  } = useQuery("kidsbackend/kids/");
   const foodItem = route.params?.foodItem || emptyFood;
 
   //Local state for the form

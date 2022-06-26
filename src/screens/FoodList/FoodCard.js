@@ -14,7 +14,7 @@ const FoodCard = ({ id, menu, menuID, navigation, editable = true }) => {
     isError,
     data: foodItem,
     error,
-  } = useQuery(`foods/${id}/`);
+  } = useQuery(`kidsbackend/foods/${id}/`);
 
   const setNewFoodOnMenu = useSetNewFoodOnMenu(menu, menuID);
 
