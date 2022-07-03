@@ -8,7 +8,7 @@ import FoodEdit from "../screens/FoodEdit/FoodEditNew";
 import WeekPlanning from "../screens/WeekPlanning/WeekPlanning";
 import SignUpScreen from "../screens/Auth/SignUpScreen";
 import LoginScreen from "../screens/Auth/LoginScreen";
-import UserButton from "../components/UserButton";
+import MenuButton from "../components/MenuButton";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "../localState";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -29,7 +29,7 @@ const WeekMenuRouter = () => {
         options={({ route, navigation }) => ({
           headerTitle: "Menu of the Week",
           headerLeft: () => {
-            return <UserButton navigation={navigation} />;
+            return <MenuButton navigation={navigation} />;
           },
         })}
       />
@@ -39,7 +39,7 @@ const WeekMenuRouter = () => {
         options={({ route, navigation }) => ({
           headerTitle: "Recipes",
           headerLeft: () => {
-            return <UserButton navigation={navigation} />;
+            return <MenuButton navigation={navigation} />;
           },
         })}
       />
@@ -56,7 +56,7 @@ const FoodListRouter = () => {
         options={({ route, navigation }) => ({
           headerTitle: "Recipes",
           headerLeft: () => {
-            return <UserButton navigation={navigation} />;
+            return <MenuButton navigation={navigation} />;
           },
         })}
       />
@@ -66,7 +66,7 @@ const FoodListRouter = () => {
         options={({ route, navigation }) => ({
           headerTitle: "Edit Food",
           headerLeft: () => {
-            return <UserButton navigation={navigation} />;
+            return <MenuButton navigation={navigation} />;
           },
         })}
       />

@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Icon, Text } from "react-native-elements";
 
-const UserButton = ({ navigation }) => {
+const MenuButton = ({ navigation }) => {
   return (
     <Icon
       name="menu"
@@ -21,4 +21,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserButton;
+export default MenuButton;
