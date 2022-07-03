@@ -1,23 +1,23 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Avatar, Text } from "react-native-elements";
+import { Icon, Text } from "react-native-elements";
 
 const UserButton = ({ navigation }) => {
   return (
-    <Avatar
-      size="small"
-      rounded
-      icon={{ name: "user", type: "font-awesome-5" }}
-      containerStyle={styles.avatarView}
+    <Icon
+      name="menu"
+      type="material"
+      color="grey"
+      containerStyle={styles.iconView}
       onPress={() => navigation.toggleDrawer()}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  avatarView: {
-    backgroundColor: "grey",
+  iconView: {
     marginRight: 10,
+    marginLeft: 10,
   },
 });
 

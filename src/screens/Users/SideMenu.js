@@ -6,7 +6,7 @@ import * as SecureStore from "expo-secure-store";
 import { isLoggedInState, tokenState } from "../../localState";
 import { useQuery } from "react-query";
 
-const Profile = () => {
+const SideMenu = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInState);
   const setToken = useSetRecoilState(tokenState);
   const {
@@ -16,13 +16,14 @@ const Profile = () => {
     error,
   } = useQuery(`dj-rest-auth/user/`);
 
-  console.log(user);
+  //console.log(user);
 
   const logout = async () => {
     await SecureStore.deleteItemAsync("token");
     setToken("");
     setIsLoggedIn(false);
   };
+
   return (
     <View style={styles.mainView}>
       <Text>{user.email}</Text>
@@ -42,4 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default SideMenu;

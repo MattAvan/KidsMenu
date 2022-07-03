@@ -12,7 +12,7 @@ import UserButton from "../components/UserButton";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "../localState";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Profile from "../screens/Users/Profile";
+import SideMenu from "../screens/Users/SideMenu";
 
 const Tab = createBottomTabNavigator();
 const WeekMenuStack = createStackNavigator();
@@ -28,7 +28,7 @@ const WeekMenuRouter = () => {
         component={WeekPlanning}
         options={({ route, navigation }) => ({
           headerTitle: "Menu of the Week",
-          headerRight: () => {
+          headerLeft: () => {
             return <UserButton navigation={navigation} />;
           },
         })}
@@ -38,7 +38,7 @@ const WeekMenuRouter = () => {
         component={FoodHeader}
         options={({ route, navigation }) => ({
           headerTitle: "Recipes",
-          headerRight: () => {
+          headerLeft: () => {
             return <UserButton navigation={navigation} />;
           },
         })}
@@ -55,7 +55,7 @@ const FoodListRouter = () => {
         component={FoodHeader}
         options={({ route, navigation }) => ({
           headerTitle: "Recipes",
-          headerRight: () => {
+          headerLeft: () => {
             return <UserButton navigation={navigation} />;
           },
         })}
@@ -65,7 +65,7 @@ const FoodListRouter = () => {
         component={FoodEdit}
         options={({ route, navigation }) => ({
           headerTitle: "Edit Food",
-          headerRight: () => {
+          headerLeft: () => {
             return <UserButton navigation={navigation} />;
           },
         })}
@@ -115,7 +115,7 @@ const MainRouter = () => {
       {isLoggedIn ? (
         <MenuDrawer.Navigator
           initialRouteName="Tab"
-          drawerContent={(props) => <Profile {...props} />}
+          drawerContent={(props) => <SideMenu {...props} />}
           drawerPosition="left"
         >
           <MenuDrawer.Screen name="Tab" component={TabRouter} />
