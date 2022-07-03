@@ -15,6 +15,12 @@ const SideMenu = ({ navigation }) => {
     data: user,
     error,
   } = useQuery(`dj-rest-auth/user/`);
+  const {
+    isKidsLoading,
+    isKidsError,
+    data: kids,
+    kidsError,
+  } = useQuery("kidsbackend/kids/");
 
   const logout = async () => {
     await SecureStore.deleteItemAsync("token");
@@ -34,7 +40,14 @@ const SideMenu = ({ navigation }) => {
       </View>
       <View style={styles.contentView}>
         <Text>{user.email}</Text>
-        <Button title="logout" onPress={logout} />
+        <View>
+          <Text>Family Members:</Text>
+          {kids.map((kid) => (
+            <Text key={kid.id}>{kid.kidName}</Text>
+          ))}
+          <Button title="Edit kids" />
+        </View>
+        <Button title="Logout" onPress={logout} />
       </View>
     </View>
   );
